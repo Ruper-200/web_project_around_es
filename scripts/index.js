@@ -1,4 +1,3 @@
-//console.log("Hello, World!");
 const initialCards = [
   {
     name: "Valle de Yosemite",
@@ -27,6 +26,51 @@ const initialCards = [
 ];
 initialCards.forEach((card) => {
   console.log(card.name);
+});
+
+////////////////////////////////////////////////////////////////////
+// Proyecto de sprint 6: Etapa 2. Perfil modal
+
+const editButton = document.querySelector(".profile__edit-button");
+const editPopup = document.querySelector("#edit-popup");
+const closeEditPopupButton = editPopup.querySelector(".popup__close");
+const nameInput = editPopup.querySelector(".popup__input_type_name");
+const descriptionInput = editPopup.querySelector(
+  ".popup__input_type_description",
+);
+
+function fillProfileForm() {
+  nameInput.value = document.querySelector(".profile__title").textContent;
+  descriptionInput.value = document.querySelector(
+    ".profile__description",
+  ).textContent;
+}
+
+function handleOpenEditPopup() {
+  fillProfileForm();
+  editPopup.classList.add("popup_is-opened");
+}
+
+editButton.addEventListener("click", handleOpenEditPopup);
+
+let formElement = document.querySelector("#edit-profile-form");
+
+function handleProfileFormSubmit(event) {
+  event.preventDefault();
+  let nameInput = document.querySelector(".popup__input_type_name");
+  let descriptionInput = document.querySelector(
+    ".popup__input_type_description",
+  );
+  document.querySelector(".profile__title").textContent = nameInput.value;
+  document.querySelector(".profile__description").textContent =
+    descriptionInput.value;
+  editPopup.classList.remove("popup_is-opened");
+}
+
+formElement.addEventListener("submit", handleProfileFormSubmit);
+
+closeEditPopupButton.addEventListener("click", function () {
+  editPopup.classList.remove("popup_is-opened");
 });
 
 //muchas gracias por la revisión y los comentarios.
