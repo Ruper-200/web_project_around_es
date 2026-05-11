@@ -24,10 +24,30 @@ const initialCards = [
     link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_lago.jpg",
   },
 ];
-initialCards.forEach((card) => {
-  console.log(card.name);
-});
 
+//////////////////////////////////////////////////////////////////////////////////7
+// Proyecto de sprint 6: Etapa 3. Tarjetas/////////
+const cardsContainer = document.querySelector(".cards__list");
+const cardTemplate = document
+  .querySelector("#card-template")
+  .content.querySelector(".card");
+
+function getCardElement(title, imageUrl) {
+  const cardElement = cardTemplate.cloneNode(true);
+  cardElement.querySelector(".card__title").textContent = title;
+  cardElement.querySelector(".card__image").src = imageUrl;
+  cardElement.querySelector(".card__image").alt = title;
+  return cardElement;
+}
+
+function renderCard(title, imageUrl) {
+  const cardElement = getCardElement(title, imageUrl);
+  cardsContainer.appendChild(cardElement);
+}
+
+initialCards.forEach((card) => {
+  renderCard(card.name, card.link);
+});
 ////////////////////////////////////////////////////////////////////
 // Proyecto de sprint 6: Etapa 2. Perfil modal
 
@@ -57,10 +77,6 @@ let formElement = document.querySelector("#edit-profile-form");
 
 function handleProfileFormSubmit(event) {
   event.preventDefault();
-  let nameInput = document.querySelector(".popup__input_type_name");
-  let descriptionInput = document.querySelector(
-    ".popup__input_type_description",
-  );
   document.querySelector(".profile__title").textContent = nameInput.value;
   document.querySelector(".profile__description").textContent =
     descriptionInput.value;
