@@ -47,6 +47,21 @@ const popupImage = imagePopup.querySelector(".popup__image");
 const popupCaption = imagePopup.querySelector(".popup__caption");
 const closeImagePopupButton = imagePopup.querySelector(".popup__close");
 
+function handleEscKey(event) {
+  if (event.key === "Escape") {
+    const openPopup = document.querySelector(".popup_is-opened");
+    if (openPopup) {
+      closeModal(openPopup);
+    }
+  }
+}
+
+function handleOverlayClick(event) {
+  if (event.target === event.currentTarget) {
+    closeModal(event.target);
+  }
+}
+
 function fillProfileForm() {
   nameInput.value = document.querySelector(".profile__title").textContent;
   descriptionInput.value = document.querySelector(
@@ -56,7 +71,7 @@ function fillProfileForm() {
 
 function handleOpenEditPopup() {
   fillProfileForm();
-  editPopup.classList.add("popup_is-opened");
+  openModal(editPopup);
 }
 
 editButton.addEventListener("click", handleOpenEditPopup);
@@ -72,10 +87,6 @@ function handleProfileFormSubmit(event) {
 }
 
 formElement.addEventListener("submit", handleProfileFormSubmit);
-
-closeEditPopupButton.addEventListener("click", function () {
-  editPopup.classList.remove("popup_is-opened");
-});
 
 //////////////////////////////////////////////////////////////////////////////////7
 // Proyecto de sprint 6: Etapa 3. Tarjetas/////////
@@ -121,15 +132,24 @@ initialCards.forEach((card) => {
 
 function openModal(modal) {
   modal.classList.add("popup_is-opened");
+  document.addEventListener("keydown", handleEscKey);
+  modal.addEventListener("click", handleOverlayClick);
 }
 
 function closeModal(modal) {
   modal.classList.remove("popup_is-opened");
+  document.removeEventListener("keydown", handleEscKey);
+  modal.removeEventListener("click", handleOverlayClick);
+}
+
+function handleCloseEditPopup() {
+  closeModal(editPopup);
 }
 
 const addButton = document.querySelector(".profile__add-button");
 const cardPopup = document.querySelector("#new-card-popup");
 const closeCardPopupButton = cardPopup.querySelector(".popup__close");
+
 function handleCardFormSubmit() {
   const titleInput = document.querySelector(".popup__input_type_card-name");
   const imageUrlInput = document.querySelector(".popup__input_type_url");
