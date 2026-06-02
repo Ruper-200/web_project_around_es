@@ -1,3 +1,9 @@
+import {
+  enableValidation,
+  hasInvalidInput,
+  resetFormValidation,
+} from "./validate.js";
+
 // Datos iniciales
 const initialCards = [
   {
@@ -59,7 +65,8 @@ const cardSubmitButton = cardPopup.querySelector(".popup__button");
 const cardInputList = Array.from(cardPopup.querySelectorAll(".popup__input"));
 
 // Formularios
-let formElement = document.querySelector("#edit-profile-form");
+const editProfileForm = document.querySelector("#edit-profile-form");
+const newCardForm = document.querySelector("#new-card-form");
 
 // Funciones de modales
 function openModal(modal) {
@@ -116,62 +123,6 @@ function handleProfileFormSubmit(event) {
   document.querySelector(".profile__description").textContent =
     descriptionInput.value;
   closeModal(editPopup);
-}
-
-// Funciones de validación
-function showInputError(inputElement) {
-  const errorElement = inputElement
-    .closest(".popup__form")
-    .querySelector(`.${inputElement.id}-error`);
-  inputElement.classList.add("popup__input_type_error");
-  errorElement.textContent = inputElement.validationMessage;
-}
-
-function hideInputError(inputElement) {
-  const errorElement = inputElement
-    .closest(".popup__form")
-    .querySelector(`.${inputElement.id}-error`);
-  inputElement.classList.remove("popup__input_type_error");
-  errorElement.textContent = "";
-}
-
-function checkInputValidity(inputElement) {
-  if (!inputElement.validity.valid) {
-    showInputError(inputElement);
-  } else {
-    hideInputError(inputElement);
-  }
-}
-
-function hasInvalidInput(inputList) {
-  return inputList.some((inputElement) => !inputElement.validity.valid);
-}
-
-function toggleSubmitButton(inputList, submitButton) {
-  if (hasInvalidInput(inputList)) {
-    submitButton.classList.add("popup__button_disabled");
-    submitButton.disabled = true;
-  } else {
-    submitButton.classList.remove("popup__button_disabled");
-    submitButton.disabled = false;
-  }
-}
-
-function resetFormValidation(inputList, submitButton) {
-  inputList.forEach((inputElement) => {
-    hideInputError(inputElement);
-  });
-  toggleSubmitButton(inputList, submitButton);
-}
-
-function enableValidation(inputList, submitButton) {
-  inputList.forEach((inputElement) => {
-    inputElement.addEventListener("input", () => {
-      checkInputValidity(inputElement);
-      toggleSubmitButton(inputList, submitButton);
-    });
-  });
-  toggleSubmitButton(inputList, submitButton);
 }
 
 // Funciones de tarjetas.
@@ -232,7 +183,7 @@ function handleOpenCardPopup() {
 // Eventos del perfil
 editButton.addEventListener("click", handleOpenEditPopup);
 closeEditPopupButton.addEventListener("click", handleCloseEditPopup);
-formElement.addEventListener("submit", handleProfileFormSubmit);
+editProfileForm.addEventListener("submit", handleProfileFormSubmit);
 
 // Eventos del popup de imagen
 closeImagePopupButton.addEventListener("click", () => {
@@ -246,8 +197,7 @@ closeCardPopupButton.addEventListener("click", () => {
 
 addButton.addEventListener("click", handleOpenCardPopup);
 
-formElement = document.querySelector("#new-card-form");
-formElement.addEventListener("submit", (event) => {
+newCardForm.addEventListener("submit", (event) => {
   event.preventDefault();
   handleCardFormSubmit();
 });
@@ -257,5 +207,4 @@ initialCards.forEach((card) => {
   renderCard(card.name, card.link);
 });
 
-enableValidation(profileInputList, profileSubmitButton);
-enableValidation(cardInputList, cardSubmitButton);
+enableValidation([editProfileForm, newCardForm]);
