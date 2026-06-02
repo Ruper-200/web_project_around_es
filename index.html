@@ -62,11 +62,13 @@
       <div class="popup__content">
         <button aria-label="Cerrar ventana emergente" class="popup__close" type="button"></button>
         <h3 class="popup__title">Nuevo lugar</h3>
-        <form class="popup__form" id="new-card-form">
-          <input class="popup__input popup__input_type_card-name" name="place-name" placeholder="Título" required
-            type="text" />
-          <input class="popup__input popup__input_type_url" name="link" placeholder="Enlace a la imagen" required
-            type="url" />
+        <form class="popup__form" id="new-card-form" novalidate>
+          <input class="popup__input popup__input_type_card-name" id="card-name-input" name="place-name"
+            placeholder="Título" required minlength="2" maxlength="30" type="text" />
+          <span class="popup__input-error card-name-input-error"></span>
+          <input class="popup__input popup__input_type_url" id="card-url-input" name="link"
+            placeholder="Enlace a la imagen" required type="url" />
+          <span class="popup__input-error card-url-input-error"></span>
           <button class="button popup__button" type="submit">Crear</button>
         </form>
       </div>
