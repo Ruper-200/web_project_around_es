@@ -1,4 +1,4 @@
-import FormValidator from "./validate.js";
+import FormValidator from "../components/FormValidator.js";
 import { defaultFormConfig } from "../utils/constants.js";
 
 // Datos iniciales
