@@ -113,7 +113,7 @@ function handleCloseEditPopup() {
 
 function handleProfileFormSubmit(event) {
   event.preventDefault("submit");
-  if (editProfileFormValidator.hasInvalidInput()) {
+  if (!editProfileForm.checkValidity()) {
     return;
   }
   document.querySelector(".profile__title").textContent = nameInput.value;
@@ -160,7 +160,7 @@ function renderCard(title, imageUrl) {
 }
 
 function handleCardFormSubmit() {
-  if (newCardFormValidator.hasInvalidInput()) {
+  if (!newCardForm.checkValidity()) {
     return;
   }
   const titleInput = document.querySelector(".popup__input_type_card-name");
