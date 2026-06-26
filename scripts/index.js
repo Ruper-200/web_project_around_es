@@ -1,4 +1,4 @@
-import FormValidator from "./validate.js";
+import FormValidator from "../components/FormValidator.js";
 import { defaultFormConfig } from "../utils/constants.js";
 // Datos iniciales
 const initialCards = [
@@ -92,7 +92,7 @@ function handleCloseEditPopup() {
 }
 function handleProfileFormSubmit(event) {
     event.preventDefault("submit");
-    if (editProfileFormValidator.hasInvalidInput()) {
+    if (!editProfileForm.checkValidity()) {
         return;
     }
     document.querySelector(".profile__title").textContent = nameInput.value;
@@ -128,7 +128,7 @@ function renderCard(title, imageUrl) {
     cardsContainer.appendChild(cardElement);
 }
 function handleCardFormSubmit() {
-    if (newCardFormValidator.hasInvalidInput()) {
+    if (!newCardForm.checkValidity()) {
         return;
     }
     const titleInput = document.querySelector(".popup__input_type_card-name");
