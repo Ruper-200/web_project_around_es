@@ -1,8 +1,5 @@
-import {
-  enableValidation,
-  hasInvalidInput,
-  resetFormValidation,
-} from "./validate.js";
+import FormValidator from "./validate.js";
+import { defaultFormConfig } from "../utils/constants.js";
 
 // Datos iniciales
 const initialCards = [
@@ -46,11 +43,6 @@ const nameInput = editPopup.querySelector(".popup__input_type_name");
 const descriptionInput = editPopup.querySelector(
   ".popup__input_type_description",
 );
-const profileSubmitButton = editPopup.querySelector(".popup__button");
-const profileInputList = Array.from(
-  editPopup.querySelectorAll(".popup__input"),
-);
-
 // Elementos del popup de imagen
 const imagePopup = document.querySelector("#image-popup");
 const popupImage = imagePopup.querySelector(".popup__image");
@@ -61,12 +53,17 @@ const closeImagePopupButton = imagePopup.querySelector(".popup__close");
 const addButton = document.querySelector(".profile__add-button");
 const cardPopup = document.querySelector("#new-card-popup");
 const closeCardPopupButton = cardPopup.querySelector(".popup__close");
-const cardSubmitButton = cardPopup.querySelector(".popup__button");
-const cardInputList = Array.from(cardPopup.querySelectorAll(".popup__input"));
 
 // Formularios
 const editProfileForm = document.querySelector("#edit-profile-form");
 const newCardForm = document.querySelector("#new-card-form");
+
+// Validacion de formularios
+const editProfileFormValidator = new FormValidator(
+  defaultFormConfig,
+  editProfileForm,
+);
+const newCardFormValidator = new FormValidator(defaultFormConfig, newCardForm);
 
 // Funciones de modales
 function openModal(modal) {
@@ -106,7 +103,7 @@ function fillProfileForm() {
 
 function handleOpenEditPopup() {
   fillProfileForm();
-  resetFormValidation(profileInputList, profileSubmitButton);
+  editProfileFormValidator.resetValidation();
   openModal(editPopup);
 }
 
@@ -116,7 +113,7 @@ function handleCloseEditPopup() {
 
 function handleProfileFormSubmit(event) {
   event.preventDefault("submit");
-  if (hasInvalidInput(profileInputList)) {
+  if (editProfileFormValidator.hasInvalidInput()) {
     return;
   }
   document.querySelector(".profile__title").textContent = nameInput.value;
@@ -128,7 +125,7 @@ function handleProfileFormSubmit(event) {
 // Funciones de tarjetas.
 function getCardElement(
   title = "Sin título",
-  imageUrl = "./images/placeholder.jpg",
+  imageUrl = "../images/placeholder.jpg",
 ) {
   const cardElement = cardTemplate.cloneNode(true);
   const cardImage = cardElement.querySelector(".card__image");
@@ -163,7 +160,7 @@ function renderCard(title, imageUrl) {
 }
 
 function handleCardFormSubmit() {
-  if (hasInvalidInput(cardInputList)) {
+  if (newCardFormValidator.hasInvalidInput()) {
     return;
   }
   const titleInput = document.querySelector(".popup__input_type_card-name");
@@ -172,11 +169,11 @@ function handleCardFormSubmit() {
   closeModal(cardPopup);
   titleInput.value = "";
   imageUrlInput.value = "";
-  resetFormValidation(cardInputList, cardSubmitButton);
+  newCardFormValidator.resetValidation();
 }
 
 function handleOpenCardPopup() {
-  resetFormValidation(cardInputList, cardSubmitButton);
+  newCardFormValidator.resetValidation();
   openModal(cardPopup);
 }
 
@@ -207,4 +204,7 @@ initialCards.forEach((card) => {
   renderCard(card.name, card.link);
 });
 
-enableValidation([editProfileForm, newCardForm]);
+editProfileFormValidator.enableValidation();
+newCardFormValidator.enableValidation();
+
+//gracias por la revisión y los comentarios...

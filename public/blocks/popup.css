@@ -102,6 +102,11 @@
   color: #ff0000;
   font-size: 12px;
   line-height: 15px;
+  visibility: hidden;
+}
+
+.popup__input-error_active {
+  visibility: visible;
 }
 
 .popup__title {
