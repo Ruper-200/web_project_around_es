@@ -34,14 +34,20 @@ export class Card {
     public generateCard(): HTMLElement {
         this._element = this._getTemplate();
 
+        this.setEventListeners();
+
         const cardImage = this._element.querySelector<HTMLImageElement>(".card__image");
         const cardTitle = this._element.querySelector<HTMLElement>(".card__title");
         const likeButton = this._element.querySelector<HTMLButtonElement>(".card__like-button");
         const deleteButton = this._element.querySelector<HTMLButtonElement>(".card__delete-button");    
 
- cardImage.src = this._link;
+        cardImage.src = this._link;
         cardImage.alt = this._name;
         cardTitle.textContent = this._name;
 
         return this._element;
     }
+    private setEventListeners(): void {
+        this._element.addEventListener("click", () => this._handleCardClick());
+    }
+}
