@@ -1,15 +1,17 @@
-export class Section {
+export default class Section {
     constructor({ items, renderer }, containerSelector) {
-        this._items = items;
-        this._renderer = renderer;
-        this._container = document.querySelector(containerSelector);
+        const container = document.querySelector(containerSelector);
+        if (!container) {
+            throw new Error(`No se encontro la seccion: ${containerSelector}`);
+        }
+        this.items = items;
+        this.renderer = renderer;
+        this.container = container;
     }
     addItem(element) {
-        this._container.append(element);
+        this.container.append(element);
     }
     renderItems() {
-        this._items.forEach((item) => {
-            this._renderer(item);
-        });
+        this.items.forEach((item) => this.renderer(item));
     }
 }
