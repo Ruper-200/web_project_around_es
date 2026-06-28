@@ -1,75 +1,54 @@
-# Tripleten web_project_around_es
+# Around The U.S.
 
-## Descripción del Proyecto
+## Descripcion
 
-**Alrededor de los EE.UU.** es una página web interactiva que permite a los usuarios compartir y explorar fotografías de lugares emblemáticos de Estados Unidos. Los usuarios pueden agregar nuevas tarjetas con imágenes, eliminar las existentes y dar "me gusta" a sus fotografías favoritas.
+Around The U.S. es una galeria web interactiva en la que el usuario puede editar
+su perfil, agregar y eliminar fotografias, marcar tarjetas como favoritas y abrir
+las imagenes en una vista ampliada.
 
-Este proyecto representa una aplicación web moderna que combina un diseño responsivo con funcionalidades dinámicas implementadas en JavaScript vanilla.
+La interfaz es responsiva y los formularios muestran mensajes de validacion antes
+de permitir el envio de datos.
 
 ## Funcionalidades
 
-### ✨ Características principales:
+- Edicion del nombre y la ocupacion del usuario.
+- Creacion y eliminacion de tarjetas con fotografias.
+- Boton de Me gusta para cada tarjeta.
+- Vista ampliada de las imagenes en ventanas modales.
+- Cierre de modales mediante boton, clic en el fondo o tecla Escape.
+- Validacion visual de formularios.
 
-- **Galería de imágenes interactiva**: Visualización de tarjetas con fotografías de lugares icónicos
-- **Gestión de perfil**: Edición del nombre y descripción del usuario
-- **Agregar nuevas tarjetas**: Formulario para subir nuevas fotografías con título y enlace
-- **Sistema de "Me gusta"**: Interacción con las tarjetas mediante botones de like
-- **Eliminar tarjetas**: Posibilidad de remover tarjetas de la galería
-- **Vista ampliada**: Modal para ver las imágenes en tamaño completo
-- **Diseño responsivo**: Adaptación a diferentes tamaños de pantalla
+## Tecnologias y tecnicas
 
-### 🎯 Interacciones implementadas:
+- HTML5 y CSS3.
+- Diseno responsivo con Flexbox, Grid y media queries.
+- Metodologia BEM para organizar los estilos.
+- TypeScript y modulos ES.
+- Programacion orientada a objetos.
+- Encapsulamiento, herencia, clases genericas e interfaces tipadas.
+- Manipulacion del DOM y eventos del navegador.
+- Git y GitHub para control de versiones.
 
-- Ventanas emergentes (modales) para editar perfil y agregar tarjetas
-- Validación de formularios
-- Manipulación dinámica del DOM
-- Eventos de usuario (clicks, envío de formularios)
-- Gestión del estado de la aplicación
+## Arquitectura
 
-## Tecnologías Utilizadas
+El codigo fuente se encuentra en `src` y TypeScript genera los archivos que usa
+el navegador dentro de `public`.
 
-### Frontend:
+Cada clase tiene una responsabilidad concreta:
 
-- **HTML5**: Estructura semántica y accesible
-- **CSS3**: Estilos modernos con Flexbox y Grid
-- **JavaScript (ES6+)**: Funcionalidades interactivas y manipulación del DOM
+- `Card`: crea las tarjetas y controla sus interacciones.
+- `Section`: renderiza colecciones dentro de un contenedor.
+- `FormValidator`: valida los formularios.
+- `Popup`: contiene el comportamiento comun de las ventanas modales.
+- `PopupWithImage`: muestra una imagen y su leyenda.
+- `PopupWithForm`: procesa y reinicia formularios dentro de un modal.
+- `UserInfo`: lee y actualiza la informacion del perfil.
 
-### Metodologías y herramientas:
+## Compilacion
 
-- **Metodología BEM**: Organización y nomenclatura de clases CSS
-- **Diseño responsivo**: Media queries para adaptación móvil
-- **Control de versiones**: Git y GitHub
-- **Estructura modular**: Separación de archivos por componentes
-
-### Características técnicas:
-
-- Parámetros rest y sintaxis spread
-- Funciones arrow y expresiones de función
-- Manipulación de arrays y objetos
-- Event listeners y manejo de eventos
-- Formularios dinámicos
-
-## Estructura del Proyecto
-
+```bash
+tsc
 ```
-web_project_around_es/
-├── index.html              # Archivo HTML principal
-├── pages/
-│   └── index.css           # Hoja de estilos principal
-├── blocks/                 # Componentes CSS (metodología BEM)
-│   ├── header/
-│   ├── profile/
-│   ├── cards/
-│   ├── popup/
-│   └── footer/
-├── images/                 # Recursos gráficos
-│   ├── logo.svg
-│   ├── avatar.jpg
-│   └── icons/
-├── vendor/                 # Librerías de terceros
-│   ├── normalize.css
-│   └── fonts/
-├── scripts/                # Archivos JavaScript
-│   └── index.js
-└── README.md
-```
+
+El punto de entrada es `src/scripts/index.ts` y su resultado compilado es
+`public/scripts/index.js`.
