@@ -7,12 +7,12 @@ export default class PopupWithForm extends Popup {
             throw new Error(`No se encontro el formulario: ${popupSelector}`);
         }
         this.formElement = formElement;
-        this.inputList = Array.from(formElement.querySelectorAll(".popup__input"));
+        this.inputs = Array.from(formElement.querySelectorAll(".popup__input"));
         this.handleFormSubmit = handleFormSubmit;
     }
     getInputValues() {
-        return this.inputList.reduce((values, inputElement) => {
-            values[inputElement.name] = inputElement.value;
+        return this.inputs.reduce((values, input) => {
+            values[input.name] = input.value;
             return values;
         }, {});
     }
@@ -20,6 +20,9 @@ export default class PopupWithForm extends Popup {
         super.setEventListeners();
         this.formElement.addEventListener("submit", (event) => {
             event.preventDefault();
+            if (!this.formElement.checkValidity()) {
+                return;
+            }
             this.handleFormSubmit(this.getInputValues());
         });
     }

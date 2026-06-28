@@ -64,8 +64,7 @@ const createCard = (cardData: CardData): HTMLElement =>
     imagePopup.open(selectedCard);
   }).generateCard();
 
-let cardSection: Section<CardData>;
-cardSection = new Section<CardData>(
+const cardSection = new Section<CardData>(
   {
     items: initialCards,
     renderer: (cardData) => cardSection.addItem(createCard(cardData)),
@@ -73,8 +72,7 @@ cardSection = new Section<CardData>(
   ".cards__list",
 );
 
-let editProfilePopup: PopupWithForm;
-editProfilePopup = new PopupWithForm("#edit-popup", (values) => {
+const editProfilePopup = new PopupWithForm("#edit-popup", (values) => {
   userInfo.setUserInfo({
     name: values.name,
     job: values.description,
@@ -82,8 +80,7 @@ editProfilePopup = new PopupWithForm("#edit-popup", (values) => {
   editProfilePopup.close();
 });
 
-let newCardPopup: PopupWithForm;
-newCardPopup = new PopupWithForm("#new-card-popup", (values) => {
+const newCardPopup = new PopupWithForm("#new-card-popup", (values) => {
   cardSection.addItem(
     createCard({
       name: values["place-name"],

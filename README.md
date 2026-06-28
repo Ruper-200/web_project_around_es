@@ -16,14 +16,14 @@ de permitir el envio de datos.
 - Boton de Me gusta para cada tarjeta.
 - Vista ampliada de las imagenes en ventanas modales.
 - Cierre de modales mediante boton, clic en el fondo o tecla Escape.
-- Validacion visual de formularios.
+- Validacion visual y universal de formularios.
 
 ## Tecnologias y tecnicas
 
 - HTML5 y CSS3.
 - Diseno responsivo con Flexbox, Grid y media queries.
 - Metodologia BEM para organizar los estilos.
-- TypeScript y modulos ES.
+- TypeScript estricto y modulos ES.
 - Programacion orientada a objetos.
 - Encapsulamiento, herencia, clases genericas e interfaces tipadas.
 - Manipulacion del DOM y eventos del navegador.
@@ -31,8 +31,8 @@ de permitir el envio de datos.
 
 ## Arquitectura
 
-El codigo fuente se encuentra en `src` y TypeScript genera los archivos que usa
-el navegador dentro de `public`.
+El codigo fuente TypeScript se encuentra en `src` y el compilador genera los
+archivos JavaScript que usa el navegador dentro de `public`.
 
 Cada clase tiene una responsabilidad concreta:
 

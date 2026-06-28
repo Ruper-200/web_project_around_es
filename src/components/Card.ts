@@ -33,10 +33,10 @@ export default class Card {
   }
 
   private getTemplate(templateSelector: string): HTMLElement {
-    const template =
-      document.querySelector<HTMLTemplateElement>(templateSelector);
-    const cardElement =
-      template?.content.querySelector<HTMLElement>(".card");
+    const template = document.querySelector<HTMLTemplateElement>(
+      templateSelector,
+    );
+    const cardElement = template?.content.querySelector<HTMLElement>(".card");
 
     if (!cardElement) {
       throw new Error(`No se encontro la plantilla: ${templateSelector}`);

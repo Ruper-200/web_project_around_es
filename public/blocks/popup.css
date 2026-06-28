@@ -9,6 +9,7 @@
   bottom: 0;
   right: 0;
   display: none;
+  z-index: 1;
 }
 
 .popup__button {
@@ -129,11 +130,14 @@
   background: transparent;
   border-radius: 0;
   padding: 0;
+  min-height: 0;
 }
 
 .popup__image {
-  max-width: 100%;
-  object-fit: cover;
+  display: block;
+  max-width: 75vw;
+  max-height: 75vh;
+  object-fit: contain;
 }
 
 .popup__caption {
@@ -147,10 +151,6 @@
 }
 
 @media screen and (max-width: 544px) {
-  .popup {
-    bottom: 112px;
-  }
-
   .popup__button {
     font-size: 14px;
     line-height: 17px;
@@ -183,6 +183,7 @@
 
   .popup__content_content_image {
     max-width: 75vw;
+    min-height: 0;
     padding: 0;
   }
 }

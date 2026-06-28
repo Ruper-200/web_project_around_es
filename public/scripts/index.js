@@ -45,21 +45,18 @@ const imagePopup = new PopupWithImage("#image-popup");
 const createCard = (cardData) => new Card(cardData, "#card-template", (selectedCard) => {
     imagePopup.open(selectedCard);
 }).generateCard();
-let cardSection;
-cardSection = new Section({
+const cardSection = new Section({
     items: initialCards,
     renderer: (cardData) => cardSection.addItem(createCard(cardData)),
 }, ".cards__list");
-let editProfilePopup;
-editProfilePopup = new PopupWithForm("#edit-popup", (values) => {
+const editProfilePopup = new PopupWithForm("#edit-popup", (values) => {
     userInfo.setUserInfo({
         name: values.name,
         job: values.description,
     });
     editProfilePopup.close();
 });
-let newCardPopup;
-newCardPopup = new PopupWithForm("#new-card-popup", (values) => {
+const newCardPopup = new PopupWithForm("#new-card-popup", (values) => {
     cardSection.addItem(createCard({
         name: values["place-name"],
         link: values.link,

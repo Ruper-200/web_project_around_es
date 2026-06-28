@@ -27,9 +27,11 @@
 }
 
 .card__image {
+  width: 100%;
   min-height: 282px;
   max-height: 282px;
   object-fit: cover;
+  cursor: pointer;
 }
 
 .card__like-button {
@@ -40,10 +42,6 @@
   border: none;
   padding: 0;
   margin: 0;
-}
-.card__like-button:active {
-  background: transparent url("../images/like-active.svg") center no-repeat;
-  background-size: 21px 18px;
 }
 .card__like-button:hover {
   opacity: 0.5;
@@ -68,7 +66,6 @@
   opacity: 0.6;
 }
 
-/* agregue esta clase para el estado activo del boton de like, ya que el :active solo funciona mientras se mantiene presionado el boton, y necesitamos que el estado activo se mantenga despues de hacer click */
 .card__like-button_active {
   background: transparent url("../images/like-active.svg") center no-repeat;
   background-size: 21px 18px;

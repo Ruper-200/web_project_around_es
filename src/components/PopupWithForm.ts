@@ -5,7 +5,7 @@ export type FormSubmitHandler = (values: FormValues) => void;
 
 export default class PopupWithForm extends Popup {
   private readonly formElement: HTMLFormElement;
-  private readonly inputList: HTMLInputElement[];
+  private readonly inputs: HTMLInputElement[];
   private readonly handleFormSubmit: FormSubmitHandler;
 
   constructor(popupSelector: string, handleFormSubmit: FormSubmitHandler) {
@@ -19,15 +19,15 @@ export default class PopupWithForm extends Popup {
     }
 
     this.formElement = formElement;
-    this.inputList = Array.from(
+    this.inputs = Array.from(
       formElement.querySelectorAll<HTMLInputElement>(".popup__input"),
     );
     this.handleFormSubmit = handleFormSubmit;
   }
 
   private getInputValues(): FormValues {
-    return this.inputList.reduce<FormValues>((values, inputElement) => {
-      values[inputElement.name] = inputElement.value;
+    return this.inputs.reduce<FormValues>((values, input) => {
+      values[input.name] = input.value;
       return values;
     }, {});
   }
@@ -37,6 +37,11 @@ export default class PopupWithForm extends Popup {
 
     this.formElement.addEventListener("submit", (event: SubmitEvent) => {
       event.preventDefault();
+
+      if (!this.formElement.checkValidity()) {
+        return;
+      }
+
       this.handleFormSubmit(this.getInputValues());
     });
   }

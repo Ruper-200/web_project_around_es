@@ -7,7 +7,7 @@
     "outDir": "./public",
     "allowJs": true,
     "checkJs": false,
-    "strict": false,
+    "strict": true,
     "esModuleInterop": true
   },
   "include": ["src/**/*"],
