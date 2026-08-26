@@ -1,0 +1,11 @@
+{
+  "livePreview.defaultPreviewPath": "/public/index.html"
+}
+
+//Esta carpeta guarda la configuración de VSCode, como extensiones, depuración y ajustes específicos del proyecto.
+//El archivo settings.json permite personalizar la configuración de VSCode para este proyecto en particular.
+//Por ejemplo, en este caso, se ha configurado la ruta predeterminada para la vista previa en vivo a "/public/index.html".
+//Esto significa que cuando se utilice la función de vista previa en vivo, se abrirá automáticamente el archivo index.html ubicado en la carpeta public.
+//Sugerencia de la IA que inclui.
+
+//gracias por los comentarios.
