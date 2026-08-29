@@ -5,33 +5,18 @@ import PopupWithImage from "../components/PopupWithImage.js";
 import Section from "../components/Section.js";
 import UserInfo from "../components/UserInfo.js";
 import { defaultFormConfig } from "../utils/constants.js";
+import { Api } from "../components/Api.js";
 
-const initialCards: CardData[] = [
-  {
-    name: "Valle de Yosemite",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_yosemite.jpg",
-  },
-  {
-    name: "Lago Louise",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_lake-louise.jpg",
-  },
-  {
-    name: "Montanas Calvas",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_bald-mountains.jpg",
-  },
-  {
-    name: "Latemar",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_latemar.jpg",
-  },
-  {
-    name: "Parque Nacional de la Vanoise",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_vanoise.jpg",
-  },
-  {
-    name: "Lago di Braies",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_lago.jpg",
-  },
-];
+
+const api = new Api({
+ baseUrl: "https://around-api.es.tripleten-services.com/v1",
+  headers: {
+    authorization: "3636b31b-1450-4ffd-abc5-23c5322623e2",
+    "Content-Type": "application/json"
+  }
+});
+
+
 
 const editButton = document.querySelector<HTMLButtonElement>(
   ".profile__edit-button",
@@ -52,6 +37,7 @@ const newCardForm = document.querySelector<HTMLFormElement>(
   "#new-card-form",
 ) as HTMLFormElement;
 
+
 const userInfo = new UserInfo({
   nameSelector: ".profile__title",
   jobSelector: ".profile__description",
@@ -64,13 +50,36 @@ const createCard = (cardData: CardData): HTMLElement =>
     imagePopup.open(selectedCard);
   }).generateCard();
 
-const cardSection = new Section<CardData>(
-  {
-    items: initialCards,
-    renderer: (cardData) => cardSection.addItem(createCard(cardData)),
-  },
-  ".cards__list",
-);
+let cardSection: Section<CardData>;
+
+async function loadInitialData(): Promise<void> {
+  try {
+    const [userData, initialCards] = await Promise.all([
+      api.getUserInfo(),
+      api.getInitialCards(),
+    ]);
+
+    userInfo.setUserInfo({
+      name: userData.name,
+      job: userData.about,
+    });
+
+    cardSection = new Section<CardData>(
+      {
+        items: initialCards,
+        renderer: (cardData) =>
+          cardSection.addItem(createCard(cardData)),
+      },
+      ".cards__list",
+    );
+
+    cardSection.renderItems();
+  } catch (err: unknown) {
+    console.error("Fallo al cargar datos iniciales:", err);
+  }
+}
+
+
 
 const editProfilePopup = new PopupWithForm("#edit-popup", (values) => {
   userInfo.setUserInfo({
@@ -80,15 +89,20 @@ const editProfilePopup = new PopupWithForm("#edit-popup", (values) => {
   editProfilePopup.close();
 });
 
-const newCardPopup = new PopupWithForm("#new-card-popup", (values) => {
+const newCardPopup = new PopupWithForm("#new-card-popup", async (values) => {
+
+  const newCardData = await api.addCard({
+    name: values["place-name"],
+    link: values.link,
+  });
+
   cardSection.addItem(
-    createCard({
-      name: values["place-name"],
-      link: values.link,
-    }),
+    createCard(newCardData),
   );
   newCardPopup.close();
 });
+
+loadInitialData();
 
 const editProfileFormValidator = new FormValidator(
   defaultFormConfig,
@@ -117,4 +131,5 @@ editProfilePopup.setEventListeners();
 newCardPopup.setEventListeners();
 editProfileFormValidator.enableValidation();
 newCardFormValidator.enableValidation();
-cardSection.renderItems();
+
+

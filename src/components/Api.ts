@@ -1,3 +1,7 @@
+import type { CardData } from "./Card.js";
+
+
+
 type UserData = {
   name: string;
   about: string;
@@ -5,45 +9,77 @@ type UserData = {
   _id: string;
 };
 
-type CardData = {
-  isLiked: boolean;
-  _id: string;
-  name: string;
-  link: string;
-  owner: string;
-  createdAt: string;
+type ApiOptions = {
+  baseUrl: string;
+  headers: {
+    authorization: string;
+    "Content-Type": string;
+  };
+};
+
+type CardFormData = {
+    name: string;
+    link: string;
+};
+
+type UserFormData = {
+    name: string;
+    about: string;
+};
+
+type AvatarFormData = {
+    avatar: string;
 };
 
 export class Api {
   private baseUrl: string;
-  private token: string;
+  private headers: ApiOptions["headers"];
 
-  constructor(baseUrl: string, token: string) {
-    this.baseUrl = baseUrl;
-    this.token = token;
+  constructor(options: ApiOptions) {
+    this.baseUrl = options.baseUrl;
+    this.headers = options.headers;
   }
 
   async getUserInfo(): Promise<UserData> {
     const res = await fetch(`${this.baseUrl}/users/me`, {
-      headers: {
-        authorization: this.token,
-      },
-    });
+      headers: this.headers,
+      });
+
+        if (!res.ok) {
+      throw new Error(`Error: ${res.status}`);
+    }
 
     const data: UserData = await res.json();
 
     return data;
   }
 
-  async getCardData(): Promise<CardData[]> {
+  async getInitialCards(): Promise<CardData[]> {
     const res = await fetch(`${this.baseUrl}/cards/`, {
-      headers: {
-        authorization: this.token,
-      },
+      headers: this.headers
     });
+
+    if (!res.ok) {
+      throw new Error(`Error: ${res.status}`);
+    }
 
     const data: CardData[] = await res.json();
 
     return data;
   }
+
+
+async addCard(cardData: CardFormData) : Promise<CardData> {
+    const res = await fetch(`${this.baseUrl}/cards/`, {
+      method: "POST",
+      headers: this.headers,
+      body: JSON.stringify(cardData),
+    }); 
+
+    if (!res.ok) {
+      throw new Error(`Error: ${res.status}`);
+    }
+    const data: CardData = await res.json();
+    return data;
+  } 
 }
