@@ -27,6 +27,7 @@ type UserFormData = {
     about: string;
 };
 
+
 type AvatarFormData = {
     avatar: string;
 };
@@ -82,4 +83,27 @@ async addCard(cardData: CardFormData) : Promise<CardData> {
     const data: CardData = await res.json();
     return data;
   } 
+
+
+  async updateUserInfo(userData: UserFormData): Promise<UserData> {
+    const res = await fetch(`${this.baseUrl}/users/me`, {
+        method: "PATCH",
+        headers: this.headers,
+        body: JSON.stringify(userData),
+    });
+    if (!res.ok) {
+        throw new Error(`Error: ${res.status}`);
+    } 
+    const data: UserData = await res.json();
+    return data;
 }
+
+async deleteCard(cardId: string): Promise<void> {
+    const res = await fetch(`${this.baseUrl}/cards/${cardId}`, {
+        method: "DELETE",
+        headers: this.headers,
+    });
+    if (!res.ok) {
+        throw new Error(`Error: ${res.status}`);
+    } 
+}}

@@ -9,6 +9,9 @@ export interface CardData {
 
 export type CardClickHandler = (data: CardData) => void;
 
+export type CardDeleteHandler = (cardId: string) => void | Promise<void>;
+
+
 export default class Card {
   private readonly data: CardData;
   private readonly element: HTMLElement;
@@ -17,14 +20,18 @@ export default class Card {
   private readonly likeButton: HTMLButtonElement;
   private readonly deleteButton: HTMLButtonElement;
   private readonly handleCardClick: CardClickHandler;
+  private readonly handleDeleteClick: CardDeleteHandler;
 
   constructor(
     data: CardData,
     templateSelector: string,
     handleCardClick: CardClickHandler,
-  ) {
+    handleDeleteClick: CardDeleteHandler
+  ) { 
     this.data = data;
     this.handleCardClick = handleCardClick;
+    this.handleDeleteClick = handleDeleteClick;
+
     this.element = this.getTemplate(templateSelector);
     this.cardImage = this.getElement<HTMLImageElement>(".card__image");
     this.cardTitle = this.getElement<HTMLElement>(".card__title");
@@ -63,7 +70,7 @@ export default class Card {
     this.likeButton.classList.toggle("card__like-button_active");
   }
 
-  private deleteCard(): void {
+  public deleteCard(): void {
     this.element.remove();
   }
 
@@ -72,7 +79,7 @@ export default class Card {
       this.handleCardClick(this.data);
     });
     this.likeButton.addEventListener("click", () => this.toggleLike());
-    this.deleteButton.addEventListener("click", () => this.deleteCard());
+    this.deleteButton.addEventListener("click", () => this.handleDeleteClick(this.data._id));
   }
 
   public generateCard(): HTMLElement {

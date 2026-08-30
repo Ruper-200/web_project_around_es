@@ -6,6 +6,7 @@ import Section from "../components/Section.js";
 import UserInfo from "../components/UserInfo.js";
 import { defaultFormConfig } from "../utils/constants.js";
 import { Api } from "../components/Api.js";
+import PopupWithConfirmation from "../components/PopupWithConfirmation.js";
 
 
 const api = new Api({
@@ -45,10 +46,29 @@ const userInfo = new UserInfo({
 
 const imagePopup = new PopupWithImage("#image-popup");
 
-const createCard = (cardData: CardData): HTMLElement =>
-  new Card(cardData, "#card-template", (selectedCard) => {
-    imagePopup.open(selectedCard);
-  }).generateCard();
+const deleteConfirmationPopup =
+  new PopupWithConfirmation("#delete-confirmation-popup", async () => {});
+
+const createCard = (cardData: CardData): HTMLElement => {
+  const card = new Card(
+    cardData,
+    "#card-template",
+    (selectedCard) => {
+      imagePopup.open(selectedCard);
+    },
+    (cardId) => {
+      deleteConfirmationPopup.setSubmitAction(async () => {
+        await api.deleteCard(cardId);
+        card.deleteCard();
+      });
+
+      deleteConfirmationPopup.open();
+    },
+  );
+
+  return card.generateCard();
+};
+  
 
 let cardSection: Section<CardData>;
 
@@ -81,10 +101,14 @@ async function loadInitialData(): Promise<void> {
 
 
 
-const editProfilePopup = new PopupWithForm("#edit-popup", (values) => {
-  userInfo.setUserInfo({
+const editProfilePopup = new PopupWithForm("#edit-popup", async (values) => {
+  const updatedUserData = await api.updateUserInfo({
     name: values.name,
-    job: values.description,
+    about: values.description,
+  });
+  userInfo.setUserInfo({
+    name: updatedUserData.name,
+    job: updatedUserData.about,
   });
   editProfilePopup.close();
 });
@@ -129,6 +153,7 @@ addButton.addEventListener("click", () => {
 imagePopup.setEventListeners();
 editProfilePopup.setEventListeners();
 newCardPopup.setEventListeners();
+deleteConfirmationPopup.setEventListeners();
 editProfileFormValidator.enableValidation();
 newCardFormValidator.enableValidation();
 

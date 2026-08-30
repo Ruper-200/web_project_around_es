@@ -1,12 +1,13 @@
 import Popup from "./Popup.js";
 
 export type FormValues = Record<string, string>;
-export type FormSubmitHandler = (values: FormValues) => void;
+export type FormSubmitHandler = (values: FormValues) => void | Promise<void>;
 
 export default class PopupWithForm extends Popup {
   private readonly formElement: HTMLFormElement;
   private readonly inputs: HTMLInputElement[];
   private readonly handleFormSubmit: FormSubmitHandler;
+  private readonly submitButton: HTMLButtonElement;
 
   constructor(popupSelector: string, handleFormSubmit: FormSubmitHandler) {
     super(popupSelector);
@@ -19,6 +20,12 @@ export default class PopupWithForm extends Popup {
     }
 
     this.formElement = formElement;
+    const submitButton = this.formElement.querySelector<HTMLButtonElement>(".popup__button");
+
+    if (!submitButton) {
+      throw new Error(`No se encontro el boton de submit: ${popupSelector}`);
+    }
+    this.submitButton = submitButton;
     this.inputs = Array.from(
       formElement.querySelectorAll<HTMLInputElement>(".popup__input"),
     );
@@ -35,15 +42,25 @@ export default class PopupWithForm extends Popup {
   public override setEventListeners(): void {
     super.setEventListeners();
 
-    this.formElement.addEventListener("submit", (event: SubmitEvent) => {
+    this.formElement.addEventListener("submit", async (event: SubmitEvent) => {
       event.preventDefault();
 
       if (!this.formElement.checkValidity()) {
-        return;
+       return;
       }
 
-      this.handleFormSubmit(this.getInputValues());
-    });
+       const originalText = this.submitButton.textContent;
+        this.submitButton.textContent = "Guardando...";
+
+      try {
+     await this.handleFormSubmit(this.getInputValues());
+
+      } catch (error : unknown) {
+      console.error("Error al enviar el formulario:", error);
+    } finally {
+      this.submitButton.textContent = originalText;
+    }
+  });
   }
 
   public override close(): void {
