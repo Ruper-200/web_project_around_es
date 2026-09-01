@@ -44,7 +44,16 @@ const createCard = (cardData) => {
             card.deleteCard();
         }));
         deleteConfirmationPopup.open();
-    });
+    }, (cardId, isLiked) => __awaiter(void 0, void 0, void 0, function* () {
+        let updatedCard;
+        if (isLiked) {
+            updatedCard = yield api.unlikeCard(cardId);
+        }
+        else {
+            updatedCard = yield api.likeCard(cardId);
+        }
+        card.setLikeState(updatedCard.isLiked);
+    }));
     return card.generateCard();
 };
 let cardSection;
