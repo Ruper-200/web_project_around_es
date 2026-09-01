@@ -11,6 +11,8 @@ export type CardClickHandler = (data: CardData) => void;
 
 export type CardDeleteHandler = (cardId: string) => void | Promise<void>;
 
+export type CardLikeHandler = (cardId: string, isLiked: boolean) => void | Promise<void>; 
+
 
 export default class Card {
   private readonly data: CardData;
@@ -21,16 +23,19 @@ export default class Card {
   private readonly deleteButton: HTMLButtonElement;
   private readonly handleCardClick: CardClickHandler;
   private readonly handleDeleteClick: CardDeleteHandler;
+  private readonly handleLikeClick : CardLikeHandler;
 
   constructor(
     data: CardData,
     templateSelector: string,
     handleCardClick: CardClickHandler,
-    handleDeleteClick: CardDeleteHandler
+    handleDeleteClick: CardDeleteHandler,
+    handleLikeClick: CardLikeHandler
   ) { 
     this.data = data;
     this.handleCardClick = handleCardClick;
     this.handleDeleteClick = handleDeleteClick;
+    this.handleLikeClick = handleLikeClick;
 
     this.element = this.getTemplate(templateSelector);
     this.cardImage = this.getElement<HTMLImageElement>(".card__image");
@@ -66,6 +71,10 @@ export default class Card {
     return element;
   }
 
+  public setLikeState(isLiked: boolean): void{
+    this.data.isLiked = isLiked;
+    this.likeButton.classList.toggle("card__like-button_active", isLiked);
+  }; 
   private toggleLike(): void {
     this.likeButton.classList.toggle("card__like-button_active");
   }
@@ -78,7 +87,7 @@ export default class Card {
     this.cardImage.addEventListener("click", () => {
       this.handleCardClick(this.data);
     });
-    this.likeButton.addEventListener("click", () => this.toggleLike());
+    this.likeButton.addEventListener("click", () => this.handleLikeClick(this.data._id, this.data.isLiked));
     this.deleteButton.addEventListener("click", () => this.handleDeleteClick(this.data._id));
   }
 
@@ -86,8 +95,9 @@ export default class Card {
     this.cardImage.src = this.data.link;
     this.cardImage.alt = this.data.name;
     this.cardTitle.textContent = this.data.name;
+    this.setLikeState(this.data.isLiked);
     this.setEventListeners();
-
+    
     return this.element;
   }
 }

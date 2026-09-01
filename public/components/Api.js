@@ -75,4 +75,30 @@ export class Api {
             }
         });
     }
+    likeCard(cardId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const res = yield fetch(`${this.baseUrl}/cards/${cardId}/likes`, {
+                method: "PUT",
+                headers: this.headers,
+            });
+            if (!res.ok) {
+                throw new Error(`Error: ${res.status}`);
+            }
+            const data = yield res.json();
+            return data;
+        });
+    }
+    unlikeCard(cardId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const res = yield fetch(`${this.baseUrl}/cards/${cardId}/likes`, {
+                method: "DELETE",
+                headers: this.headers,
+            });
+            if (!res.ok) {
+                throw new Error(`Error: ${res.status}`);
+            }
+            const data = yield res.json();
+            return data;
+        });
+    }
 }

@@ -106,4 +106,29 @@ async deleteCard(cardId: string): Promise<void> {
     if (!res.ok) {
         throw new Error(`Error: ${res.status}`);
     } 
-}}
+  }
+async likeCard(cardId: string): Promise<CardData> {
+  const res = await fetch(`${this.baseUrl}/cards/${cardId}/likes`, {
+    method: "PUT",
+  headers: this.headers,
+  });
+  if (!res.ok) { 
+    throw new Error (`Error: ${res.status}`);
+  }
+    const data : CardData  =  await res.json();
+  return data;
+}
+
+async unlikeCard(cardId: string): Promise<CardData> {
+  const res = await fetch(`${this.baseUrl}/cards/${cardId}/likes`, {
+    method: "DELETE",
+  headers: this.headers,
+  });
+  if (!res.ok) { 
+    throw new Error (`Error: ${res.status}`);
+  }
+    const data : CardData  =  await res.json();
+  return data;
+}
+}
+
