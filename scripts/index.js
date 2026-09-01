@@ -35,7 +35,8 @@ const userInfo = new UserInfo({
 });
 const imagePopup = new PopupWithImage("#image-popup");
 const deleteConfirmationPopup = new PopupWithConfirmation("#delete-confirmation-popup", () => __awaiter(void 0, void 0, void 0, function* () { }));
-const createCard = (cardData) => {
+const createCard = (cardData, userId) => {
+    const isOwner = cardData.owner === userId;
     const card = new Card(cardData, "#card-template", (selectedCard) => {
         imagePopup.open(selectedCard);
     }, (cardId) => {
@@ -53,24 +54,26 @@ const createCard = (cardData) => {
             updatedCard = yield api.likeCard(cardId);
         }
         card.setLikeState(updatedCard.isLiked);
-    }));
+    }), isOwner);
     return card.generateCard();
 };
+let userId;
 let cardSection;
 function loadInitialData() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const [userData, initialCards] = yield Promise.all([
+            const [userData, initialCards,] = yield Promise.all([
                 api.getUserInfo(),
                 api.getInitialCards(),
             ]);
+            userId = userData._id;
             userInfo.setUserInfo({
                 name: userData.name,
                 job: userData.about,
             });
             cardSection = new Section({
                 items: initialCards,
-                renderer: (cardData) => cardSection.addItem(createCard(cardData)),
+                renderer: (cardData) => cardSection.addItem(createCard(cardData, userId)),
             }, ".cards__list");
             cardSection.renderItems();
         }
@@ -95,7 +98,7 @@ const newCardPopup = new PopupWithForm("#new-card-popup", (values) => __awaiter(
         name: values["place-name"],
         link: values.link,
     });
-    cardSection.addItem(createCard(newCardData));
+    cardSection.addItem(createCard(newCardData, userId));
     newCardPopup.close();
 }));
 loadInitialData();
