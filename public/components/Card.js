@@ -1,5 +1,5 @@
 export default class Card {
-    constructor(data, templateSelector, handleCardClick, handleDeleteClick, handleLikeClick) {
+    constructor(data, templateSelector, handleCardClick, handleDeleteClick, handleLikeClick, isOwner) {
         this.data = data;
         this.handleCardClick = handleCardClick;
         this.handleDeleteClick = handleDeleteClick;
@@ -9,6 +9,9 @@ export default class Card {
         this.cardTitle = this.getElement(".card__title");
         this.likeButton = this.getElement(".card__like-button");
         this.deleteButton = this.getElement(".card__delete-button");
+        if (!isOwner) {
+            this.deleteButton.remove();
+        }
     }
     getTemplate(templateSelector) {
         const template = document.querySelector(templateSelector);
@@ -30,9 +33,6 @@ export default class Card {
         this.likeButton.classList.toggle("card__like-button_active", isLiked);
     }
     ;
-    toggleLike() {
-        this.likeButton.classList.toggle("card__like-button_active");
-    }
     deleteCard() {
         this.element.remove();
     }

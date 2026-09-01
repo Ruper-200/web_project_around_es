@@ -38,7 +38,6 @@ const newCardForm = document.querySelector<HTMLFormElement>(
   "#new-card-form",
 ) as HTMLFormElement;
 
-
 const userInfo = new UserInfo({
   nameSelector: ".profile__title",
   jobSelector: ".profile__description",
@@ -46,7 +45,8 @@ const userInfo = new UserInfo({
 
 const imagePopup = new PopupWithImage("#image-popup");
 const deleteConfirmationPopup = new PopupWithConfirmation("#delete-confirmation-popup", async () => {});
-const createCard = (cardData: CardData): HTMLElement => {
+const createCard = (cardData : CardData, userId : string ): HTMLElement => {
+const isOwner = cardData.owner === userId;
 const card = new Card(
     cardData,
     "#card-template",
@@ -72,19 +72,22 @@ const card = new Card(
       }
       card.setLikeState(updatedCard.isLiked);
     },
+    isOwner,
   );
 
   return card.generateCard();
 };
   
-
+let userId: string;
 let cardSection: Section<CardData>;
 async function loadInitialData(): Promise<void> {
   try {
-    const [userData, initialCards] = await Promise.all([
+    const [userData, initialCards,] = await Promise.all([
       api.getUserInfo(),
       api.getInitialCards(),
     ]);
+
+    userId = userData._id;
 
     userInfo.setUserInfo({
       name: userData.name,
@@ -95,7 +98,7 @@ async function loadInitialData(): Promise<void> {
       {
         items: initialCards,
         renderer: (cardData) =>
-          cardSection.addItem(createCard(cardData)),
+          cardSection.addItem(createCard(cardData, userId)),
       },
       ".cards__list",
     );
@@ -120,6 +123,7 @@ const editProfilePopup = new PopupWithForm("#edit-popup", async (values) => {
   editProfilePopup.close();
 });
 
+
 const newCardPopup = new PopupWithForm("#new-card-popup", async (values) => {
 const newCardData = await api.addCard({
     name: values["place-name"],
@@ -127,7 +131,7 @@ const newCardData = await api.addCard({
   });
 
   cardSection.addItem(
-    createCard(newCardData),
+    createCard(newCardData, userId),
   );
   newCardPopup.close();
 });

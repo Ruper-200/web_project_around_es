@@ -30,12 +30,14 @@ export default class Card {
     templateSelector: string,
     handleCardClick: CardClickHandler,
     handleDeleteClick: CardDeleteHandler,
-    handleLikeClick: CardLikeHandler
+    handleLikeClick: CardLikeHandler,
+    isOwner: boolean,
   ) { 
     this.data = data;
     this.handleCardClick = handleCardClick;
     this.handleDeleteClick = handleDeleteClick;
     this.handleLikeClick = handleLikeClick;
+    
 
     this.element = this.getTemplate(templateSelector);
     this.cardImage = this.getElement<HTMLImageElement>(".card__image");
@@ -46,6 +48,9 @@ export default class Card {
     this.deleteButton = this.getElement<HTMLButtonElement>(
       ".card__delete-button",
     );
+    if(!isOwner){
+      this.deleteButton.remove();
+    }
   }
 
   private getTemplate(templateSelector: string): HTMLElement {
@@ -75,9 +80,6 @@ export default class Card {
     this.data.isLiked = isLiked;
     this.likeButton.classList.toggle("card__like-button_active", isLiked);
   }; 
-  private toggleLike(): void {
-    this.likeButton.classList.toggle("card__like-button_active");
-  }
 
   public deleteCard(): void {
     this.element.remove();
