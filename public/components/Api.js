@@ -24,6 +24,20 @@ export class Api {
             return data;
         });
     }
+    updateAvatar(avatarData) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const res = yield fetch(`${this.baseUrl}/users/me/avatar`, {
+                method: "PATCH",
+                headers: this.headers,
+                body: JSON.stringify(avatarData),
+            });
+            if (!res.ok) {
+                throw new Error(`Error: ${res.status}`);
+            }
+            const data = yield res.json();
+            return data;
+        });
+    }
     getInitialCards() {
         return __awaiter(this, void 0, void 0, function* () {
             const res = yield fetch(`${this.baseUrl}/cards/`, {

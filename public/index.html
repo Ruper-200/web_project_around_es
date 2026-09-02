@@ -18,6 +18,7 @@
     <main class="content">
       <section class="profile page__section">
         <img class="profile__image" src="./images/avatar.jpg" alt="Avatar" />
+        <button class="profile__avatar-edit-button" type="button" aria-label="Editar avatar"></button>
         <div class="profile__info">
           <h1 class="profile__title">Jacques Cousteau</h1>
           <button class="profile__edit-button" type="button" aria-label="Editar perfil"></button>
@@ -57,6 +58,20 @@
           <input class="popup__input popup__input_type_description" id="profile-description-input" name="description"
             placeholder="Acerca de m&iacute;" required minlength="2" maxlength="200" type="text" />
           <span class="popup__input-error profile-description-input-error"></span>
+          <button class="button popup__button" type="submit">Guardar</button>
+        </form>
+      </div>
+    </div>
+
+
+    <div class="popup" id="avatar-popup">
+      <div class="popup__content">
+        <button class="popup__close" type="button" aria-label="Cerrar ventana emergente"></button>
+        <h3 class="popup__title">Editar avatar</h3>
+        <form class="popup__form" id="edit-avatar-form" novalidate>
+          <input class="popup__input popup__input_type_avatar" id="profile-avatar-input" name="avatar"
+            placeholder="Enlace de la imagen" required minlength="20" maxlength="100" type="url" />
+          <span class="popup__input-error profile-avatar-input-error"></span>
           <button class="button popup__button" type="submit">Guardar</button>
         </form>
       </div>

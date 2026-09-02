@@ -37,10 +37,27 @@ const editProfileForm = document.querySelector<HTMLFormElement>(
 const newCardForm = document.querySelector<HTMLFormElement>(
   "#new-card-form",
 ) as HTMLFormElement;
+const avatarEditButton = document.querySelector<HTMLButtonElement>( 
+  ".profile__avatar-edit-button"
+) as HTMLButtonElement;
+const avatarEditForm = document.querySelector<HTMLFormElement>(
+  "#edit-avatar-form",
+) as HTMLFormElement;
+const avatarEditPopup = new PopupWithForm("#avatar-popup", async (values) => {
+  const updatedUserData = await api.updateAvatar({
+    avatar: values.avatar,
+  });
+  userInfo.setUserInfo({
+    ...userInfo.getUserInfo(),
+    avatar: updatedUserData.avatar,
+  });
+  avatarEditPopup.close();
+});
 
 const userInfo = new UserInfo({
   nameSelector: ".profile__title",
   jobSelector: ".profile__description",
+  avatarSelector: ".profile__image",
 });
 
 const imagePopup = new PopupWithImage("#image-popup");
@@ -82,7 +99,7 @@ let userId: string;
 let cardSection: Section<CardData>;
 async function loadInitialData(): Promise<void> {
   try {
-    const [userData, initialCards,] = await Promise.all([
+    const [userData, initialCards] = await Promise.all([
       api.getUserInfo(),
       api.getInitialCards(),
     ]);
@@ -92,6 +109,7 @@ async function loadInitialData(): Promise<void> {
     userInfo.setUserInfo({
       name: userData.name,
       job: userData.about,
+      avatar: userData.avatar,
     });
 
     cardSection = new Section<CardData>(
@@ -112,6 +130,7 @@ async function loadInitialData(): Promise<void> {
 
 
 const editProfilePopup = new PopupWithForm("#edit-popup", async (values) => {
+  const currentUser = userInfo.getUserInfo();
   const updatedUserData = await api.updateUserInfo({
     name: values.name,
     about: values.description,
@@ -119,6 +138,7 @@ const editProfilePopup = new PopupWithForm("#edit-popup", async (values) => {
   userInfo.setUserInfo({
     name: updatedUserData.name,
     job: updatedUserData.about,
+    avatar: currentUser.avatar,
   });
   editProfilePopup.close();
 });
@@ -146,6 +166,10 @@ const newCardFormValidator = new FormValidator(
   defaultFormConfig,
   newCardForm,
 );
+const avatarEditFormValidator = new FormValidator(
+  defaultFormConfig,
+  avatarEditForm,
+);
 
 editButton.addEventListener("click", () => {
   const currentUser = userInfo.getUserInfo();
@@ -160,11 +184,19 @@ addButton.addEventListener("click", () => {
   newCardPopup.open();
 });
 
+avatarEditButton.addEventListener("click", () => {
+  avatarEditForm.reset();
+  avatarEditFormValidator.resetValidation();
+  avatarEditPopup.open();
+});
+
 imagePopup.setEventListeners();
 editProfilePopup.setEventListeners();
 newCardPopup.setEventListeners();
 deleteConfirmationPopup.setEventListeners();
+avatarEditPopup.setEventListeners();
 editProfileFormValidator.enableValidation();
 newCardFormValidator.enableValidation();
+avatarEditFormValidator.enableValidation();
 
 

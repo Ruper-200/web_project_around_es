@@ -29,9 +29,19 @@ const nameInput = document.querySelector(".popup__input_type_name");
 const descriptionInput = document.querySelector(".popup__input_type_description");
 const editProfileForm = document.querySelector("#edit-profile-form");
 const newCardForm = document.querySelector("#new-card-form");
+const avatarEditButton = document.querySelector(".profile__avatar-edit-button");
+const avatarEditForm = document.querySelector("#edit-avatar-form");
+const avatarEditPopup = new PopupWithForm("#avatar-popup", (values) => __awaiter(void 0, void 0, void 0, function* () {
+    const updatedUserData = yield api.updateAvatar({
+        avatar: values.avatar,
+    });
+    userInfo.setUserInfo(Object.assign(Object.assign({}, userInfo.getUserInfo()), { avatar: updatedUserData.avatar }));
+    avatarEditPopup.close();
+}));
 const userInfo = new UserInfo({
     nameSelector: ".profile__title",
     jobSelector: ".profile__description",
+    avatarSelector: ".profile__image",
 });
 const imagePopup = new PopupWithImage("#image-popup");
 const deleteConfirmationPopup = new PopupWithConfirmation("#delete-confirmation-popup", () => __awaiter(void 0, void 0, void 0, function* () { }));
@@ -62,7 +72,7 @@ let cardSection;
 function loadInitialData() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const [userData, initialCards,] = yield Promise.all([
+            const [userData, initialCards] = yield Promise.all([
                 api.getUserInfo(),
                 api.getInitialCards(),
             ]);
@@ -70,6 +80,7 @@ function loadInitialData() {
             userInfo.setUserInfo({
                 name: userData.name,
                 job: userData.about,
+                avatar: userData.avatar,
             });
             cardSection = new Section({
                 items: initialCards,
@@ -83,6 +94,7 @@ function loadInitialData() {
     });
 }
 const editProfilePopup = new PopupWithForm("#edit-popup", (values) => __awaiter(void 0, void 0, void 0, function* () {
+    const currentUser = userInfo.getUserInfo();
     const updatedUserData = yield api.updateUserInfo({
         name: values.name,
         about: values.description,
@@ -90,6 +102,7 @@ const editProfilePopup = new PopupWithForm("#edit-popup", (values) => __awaiter(
     userInfo.setUserInfo({
         name: updatedUserData.name,
         job: updatedUserData.about,
+        avatar: currentUser.avatar,
     });
     editProfilePopup.close();
 }));
@@ -104,6 +117,7 @@ const newCardPopup = new PopupWithForm("#new-card-popup", (values) => __awaiter(
 loadInitialData();
 const editProfileFormValidator = new FormValidator(defaultFormConfig, editProfileForm);
 const newCardFormValidator = new FormValidator(defaultFormConfig, newCardForm);
+const avatarEditFormValidator = new FormValidator(defaultFormConfig, avatarEditForm);
 editButton.addEventListener("click", () => {
     const currentUser = userInfo.getUserInfo();
     nameInput.value = currentUser.name;
@@ -115,9 +129,16 @@ addButton.addEventListener("click", () => {
     newCardFormValidator.resetValidation();
     newCardPopup.open();
 });
+avatarEditButton.addEventListener("click", () => {
+    avatarEditForm.reset();
+    avatarEditFormValidator.resetValidation();
+    avatarEditPopup.open();
+});
 imagePopup.setEventListeners();
 editProfilePopup.setEventListeners();
 newCardPopup.setEventListeners();
 deleteConfirmationPopup.setEventListeners();
+avatarEditPopup.setEventListeners();
 editProfileFormValidator.enableValidation();
 newCardFormValidator.enableValidation();
+avatarEditFormValidator.enableValidation();

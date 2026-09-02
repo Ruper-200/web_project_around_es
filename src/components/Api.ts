@@ -32,6 +32,8 @@ type AvatarFormData = {
     avatar: string;
 };
 
+
+
 export class Api {
   private baseUrl: string;
   private headers: ApiOptions["headers"];
@@ -53,6 +55,23 @@ export class Api {
     const data: UserData = await res.json();
 
     return data;
+  }
+
+  async updateAvatar(avatarData: AvatarFormData): Promise<UserData> {
+    const res = await fetch(`${this.baseUrl}/users/me/avatar`, {
+        method: "PATCH",
+        headers: this.headers,
+        body: JSON.stringify(avatarData),
+    });
+
+    if(!res.ok) {
+      throw new Error(`Error: ${res.status}`);
+    }
+
+    const data: UserData = await res.json();
+
+    return data;
+    
   }
 
   async getInitialCards(): Promise<CardData[]> {
