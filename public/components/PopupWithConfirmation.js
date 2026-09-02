@@ -18,6 +18,11 @@ export default class PopupWithConfirmation extends Popup {
         if (!formElement) {
             throw new Error(`No se encontro el formulario en el popup: ${popupSelector}`);
         }
+        const submitButton = formElement.querySelector(".popup__button");
+        if (!submitButton) {
+            throw new Error(`No se encontro el botón de envío en el popup: ${popupSelector}`);
+        }
+        this.submitButton = submitButton;
         this.formElement = formElement;
         this.handlerConfirm = handlerConfirm;
     }
@@ -25,12 +30,17 @@ export default class PopupWithConfirmation extends Popup {
         super.setEventListeners();
         this.formElement.addEventListener("submit", (event) => __awaiter(this, void 0, void 0, function* () {
             event.preventDefault();
+            const originalText = this.submitButton.textContent;
+            this.submitButton.textContent = "Guardando...";
             try {
                 yield this.handlerConfirm();
                 this.close();
             }
             catch (error) {
                 console.error("Error al confirmar la acción:", error);
+            }
+            finally {
+                this.submitButton.textContent = originalText;
             }
         }));
     }

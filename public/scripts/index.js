@@ -56,14 +56,19 @@ const createCard = (cardData, userId) => {
         }));
         deleteConfirmationPopup.open();
     }, (cardId, isLiked) => __awaiter(void 0, void 0, void 0, function* () {
-        let updatedCard;
-        if (isLiked) {
-            updatedCard = yield api.unlikeCard(cardId);
+        try {
+            let updatedCard;
+            if (isLiked) {
+                updatedCard = yield api.unlikeCard(cardId);
+            }
+            else {
+                updatedCard = yield api.likeCard(cardId);
+            }
+            card.setLikeState(updatedCard.isLiked);
         }
-        else {
-            updatedCard = yield api.likeCard(cardId);
+        catch (error) {
+            console.error("Error al actualizar los likes de la tarjeta:", error);
         }
-        card.setLikeState(updatedCard.isLiked);
     }), isOwner);
     return card.generateCard();
 };

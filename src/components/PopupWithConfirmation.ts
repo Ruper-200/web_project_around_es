@@ -5,6 +5,7 @@ export type ConfirmationHandler = () => void | Promise<void>;
 export default class PopupWithConfirmation extends Popup {
   private readonly formElement: HTMLFormElement;
   private handlerConfirm: ConfirmationHandler;
+  private readonly submitButton: HTMLButtonElement;
 
   public setSubmitAction(handlerConfirm: ConfirmationHandler): void {
   this.handlerConfirm = handlerConfirm;
@@ -15,23 +16,36 @@ export default class PopupWithConfirmation extends Popup {
     const formElement = this.popupElement.querySelector<HTMLFormElement>(
       ".popup__form",
     );
+    
     if (!formElement) {
       throw new Error(`No se encontro el formulario en el popup: ${popupSelector}`);
     }
+    const submitButton = formElement.querySelector<HTMLButtonElement>(
+      ".popup__button",
+    );
+    if (!submitButton) {
+      throw new Error(`No se encontro el botón de envío en el popup: ${popupSelector}`);
+    }
+    this.submitButton = submitButton;
     this.formElement = formElement;
     this.handlerConfirm = handlerConfirm;
 }
- public override setEventListeners(): void {
+  public override setEventListeners(): void {
     super.setEventListeners();
     this.formElement.addEventListener("submit", async (event: Event) => {
-      event.preventDefault();
+        event.preventDefault();
+
+        const originalText = this.submitButton.textContent;
+        this.submitButton.textContent = "Guardando...";
         try {
             await this.handlerConfirm();
             this.close();
         } catch (error) {
             console.error("Error al confirmar la acción:", error);
+        } finally {
+            this.submitButton.textContent = originalText;
         }
     });
- }     
+  }     
 }
 

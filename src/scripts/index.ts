@@ -62,6 +62,7 @@ const userInfo = new UserInfo({
 
 const imagePopup = new PopupWithImage("#image-popup");
 const deleteConfirmationPopup = new PopupWithConfirmation("#delete-confirmation-popup", async () => {});
+
 const createCard = (cardData : CardData, userId : string ): HTMLElement => {
 const isOwner = cardData.owner === userId;
 const card = new Card(
@@ -74,27 +75,31 @@ const card = new Card(
       deleteConfirmationPopup.setSubmitAction(async () => {
         await api.deleteCard(cardId);
         card.deleteCard();
-      }
-    );
+      });
     
       deleteConfirmationPopup.open();
 },
 
     async (cardId, isLiked) => {
+      try {
       let updatedCard : CardData;
+
       if(isLiked) {
-      updatedCard = await api.unlikeCard(cardId);
-      } else {
-      updatedCard = await api.likeCard(cardId);
+      updatedCard = await api.unlikeCard(cardId);}
+      else {
+        updatedCard = await api.likeCard(cardId);
       }
       card.setLikeState(updatedCard.isLiked);
+      } catch (error) {
+  console.error("Error al actualizar los likes de la tarjeta:", error);
+}
     },
     isOwner,
   );
-
   return card.generateCard();
 };
-  
+
+
 let userId: string;
 let cardSection: Section<CardData>;
 async function loadInitialData(): Promise<void> {
