@@ -20,8 +20,8 @@ const api = new Api({
     baseUrl: "https://around-api.es.tripleten-services.com/v1",
     headers: {
         authorization: "3636b31b-1450-4ffd-abc5-23c5322623e2",
-        "Content-Type": "application/json"
-    }
+        "Content-Type": "application/json",
+    },
 });
 const editButton = document.querySelector(".profile__edit-button");
 const addButton = document.querySelector(".profile__add-button");

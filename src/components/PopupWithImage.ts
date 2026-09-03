@@ -12,12 +12,10 @@ export default class PopupWithImage extends Popup {
   constructor(popupSelector: string) {
     super(popupSelector);
 
-    const popupImage = this.popupElement.querySelector<HTMLImageElement>(
-      ".popup__image",
-    );
-    const popupCaption = this.popupElement.querySelector<HTMLElement>(
-      ".popup__caption",
-    );
+    const popupImage =
+      this.popupElement.querySelector<HTMLImageElement>(".popup__image");
+    const popupCaption =
+      this.popupElement.querySelector<HTMLElement>(".popup__caption");
 
     if (!popupImage || !popupCaption) {
       throw new Error(`El popup de imagen esta incompleto: ${popupSelector}`);

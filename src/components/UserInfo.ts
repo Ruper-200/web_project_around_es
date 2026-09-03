@@ -15,13 +15,20 @@ export default class UserInfo {
   private readonly jobElement: HTMLElement;
   private readonly avatarElement: HTMLImageElement;
 
-  constructor({ nameSelector, jobSelector, avatarSelector }: UserInfoSelectors) {
+  constructor({
+    nameSelector,
+    jobSelector,
+    avatarSelector,
+  }: UserInfoSelectors) {
     const nameElement = document.querySelector<HTMLElement>(nameSelector);
     const jobElement = document.querySelector<HTMLElement>(jobSelector);
-    const avatarElement = document.querySelector<HTMLImageElement>(avatarSelector);
+    const avatarElement =
+      document.querySelector<HTMLImageElement>(avatarSelector);
 
     if (!nameElement || !jobElement || !avatarElement) {
-      throw new Error("No se encontraron los elementos de informacion del usuario");
+      throw new Error(
+        "No se encontraron los elementos de informacion del usuario",
+      );
     }
 
     this.nameElement = nameElement;

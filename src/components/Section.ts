@@ -33,7 +33,3 @@ export default class Section<T> {
     this.items.forEach((item) => this.renderer(item));
   }
 }
-
-
-
-

@@ -1,7 +1,5 @@
 import type { CardData } from "./Card.js";
 
-
-
 type UserData = {
   name: string;
   about: string;
@@ -18,21 +16,18 @@ type ApiOptions = {
 };
 
 type CardFormData = {
-    name: string;
-    link: string;
+  name: string;
+  link: string;
 };
 
 type UserFormData = {
-    name: string;
-    about: string;
+  name: string;
+  about: string;
 };
-
 
 type AvatarFormData = {
-    avatar: string;
+  avatar: string;
 };
-
-
 
 export class Api {
   private baseUrl: string;
@@ -46,9 +41,9 @@ export class Api {
   async getUserInfo(): Promise<UserData> {
     const res = await fetch(`${this.baseUrl}/users/me`, {
       headers: this.headers,
-      });
+    });
 
-        if (!res.ok) {
+    if (!res.ok) {
       throw new Error(`Error: ${res.status}`);
     }
 
@@ -59,24 +54,23 @@ export class Api {
 
   async updateAvatar(avatarData: AvatarFormData): Promise<UserData> {
     const res = await fetch(`${this.baseUrl}/users/me/avatar`, {
-        method: "PATCH",
-        headers: this.headers,
-        body: JSON.stringify(avatarData),
+      method: "PATCH",
+      headers: this.headers,
+      body: JSON.stringify(avatarData),
     });
 
-    if(!res.ok) {
+    if (!res.ok) {
       throw new Error(`Error: ${res.status}`);
     }
 
     const data: UserData = await res.json();
 
     return data;
-    
   }
 
   async getInitialCards(): Promise<CardData[]> {
     const res = await fetch(`${this.baseUrl}/cards/`, {
-      headers: this.headers
+      headers: this.headers,
     });
 
     if (!res.ok) {
@@ -88,66 +82,63 @@ export class Api {
     return data;
   }
 
-
-async addCard(cardData: CardFormData) : Promise<CardData> {
+  async addCard(cardData: CardFormData): Promise<CardData> {
     const res = await fetch(`${this.baseUrl}/cards/`, {
       method: "POST",
       headers: this.headers,
       body: JSON.stringify(cardData),
-    }); 
+    });
 
     if (!res.ok) {
       throw new Error(`Error: ${res.status}`);
     }
     const data: CardData = await res.json();
     return data;
-  } 
-
+  }
 
   async updateUserInfo(userData: UserFormData): Promise<UserData> {
     const res = await fetch(`${this.baseUrl}/users/me`, {
-        method: "PATCH",
-        headers: this.headers,
-        body: JSON.stringify(userData),
+      method: "PATCH",
+      headers: this.headers,
+      body: JSON.stringify(userData),
     });
     if (!res.ok) {
-        throw new Error(`Error: ${res.status}`);
-    } 
+      throw new Error(`Error: ${res.status}`);
+    }
     const data: UserData = await res.json();
     return data;
-}
+  }
 
-async deleteCard(cardId: string): Promise<void> {
+  async deleteCard(cardId: string): Promise<void> {
     const res = await fetch(`${this.baseUrl}/cards/${cardId}`, {
-        method: "DELETE",
-        headers: this.headers,
+      method: "DELETE",
+      headers: this.headers,
     });
     if (!res.ok) {
-        throw new Error(`Error: ${res.status}`);
-    } 
+      throw new Error(`Error: ${res.status}`);
+    }
   }
-async likeCard(cardId: string): Promise<CardData> {
-  const res = await fetch(`${this.baseUrl}/cards/${cardId}/likes`, {
-    method: "PUT",
-  headers: this.headers,
-  });
-  if (!res.ok) { 
-    throw new Error (`Error: ${res.status}`);
+  async likeCard(cardId: string): Promise<CardData> {
+    const res = await fetch(`${this.baseUrl}/cards/${cardId}/likes`, {
+      method: "PUT",
+      headers: this.headers,
+    });
+    if (!res.ok) {
+      throw new Error(`Error: ${res.status}`);
+    }
+    const data: CardData = await res.json();
+    return data;
   }
-    const data : CardData  =  await res.json();
-  return data;
-}
 
-async unlikeCard(cardId: string): Promise<CardData> {
-  const res = await fetch(`${this.baseUrl}/cards/${cardId}/likes`, {
-    method: "DELETE",
-  headers: this.headers,
-  });
-  if (!res.ok) { 
-    throw new Error (`Error: ${res.status}`);
+  async unlikeCard(cardId: string): Promise<CardData> {
+    const res = await fetch(`${this.baseUrl}/cards/${cardId}/likes`, {
+      method: "DELETE",
+      headers: this.headers,
+    });
+    if (!res.ok) {
+      throw new Error(`Error: ${res.status}`);
+    }
+    const data: CardData = await res.json();
+    return data;
   }
-    const data : CardData  =  await res.json();
-  return data;
 }
-}
-

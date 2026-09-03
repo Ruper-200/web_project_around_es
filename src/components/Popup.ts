@@ -11,9 +11,8 @@ export default class Popup {
       throw new Error(`No se encontro el popup: ${popupSelector}`);
     }
 
-    const closeButton = popupElement.querySelector<HTMLButtonElement>(
-      ".popup__close",
-    );
+    const closeButton =
+      popupElement.querySelector<HTMLButtonElement>(".popup__close");
 
     if (!closeButton) {
       throw new Error(`No se encontro el boton de cierre: ${popupSelector}`);

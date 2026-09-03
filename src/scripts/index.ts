@@ -8,16 +8,13 @@ import { defaultFormConfig } from "../utils/constants.js";
 import { Api } from "../components/Api.js";
 import PopupWithConfirmation from "../components/PopupWithConfirmation.js";
 
-
 const api = new Api({
   baseUrl: "https://around-api.es.tripleten-services.com/v1",
   headers: {
     authorization: "3636b31b-1450-4ffd-abc5-23c5322623e2",
-    "Content-Type": "application/json"
-  }
+    "Content-Type": "application/json",
+  },
 });
-
-
 
 const editButton = document.querySelector<HTMLButtonElement>(
   ".profile__edit-button",
@@ -37,8 +34,8 @@ const editProfileForm = document.querySelector<HTMLFormElement>(
 const newCardForm = document.querySelector<HTMLFormElement>(
   "#new-card-form",
 ) as HTMLFormElement;
-const avatarEditButton = document.querySelector<HTMLButtonElement>( 
-  ".profile__avatar-edit-button"
+const avatarEditButton = document.querySelector<HTMLButtonElement>(
+  ".profile__avatar-edit-button",
 ) as HTMLButtonElement;
 const avatarEditForm = document.querySelector<HTMLFormElement>(
   "#edit-avatar-form",
@@ -61,11 +58,14 @@ const userInfo = new UserInfo({
 });
 
 const imagePopup = new PopupWithImage("#image-popup");
-const deleteConfirmationPopup = new PopupWithConfirmation("#delete-confirmation-popup", async () => {});
+const deleteConfirmationPopup = new PopupWithConfirmation(
+  "#delete-confirmation-popup",
+  async () => {},
+);
 
-const createCard = (cardData : CardData, userId : string ): HTMLElement => {
-const isOwner = cardData.owner === userId;
-const card = new Card(
+const createCard = (cardData: CardData, userId: string): HTMLElement => {
+  const isOwner = cardData.owner === userId;
+  const card = new Card(
     cardData,
     "#card-template",
     (selectedCard) => {
@@ -76,29 +76,28 @@ const card = new Card(
         await api.deleteCard(cardId);
         card.deleteCard();
       });
-    
+
       deleteConfirmationPopup.open();
-},
+    },
 
     async (cardId, isLiked) => {
       try {
-      let updatedCard : CardData;
+        let updatedCard: CardData;
 
-      if(isLiked) {
-      updatedCard = await api.unlikeCard(cardId);}
-      else {
-        updatedCard = await api.likeCard(cardId);
-      }
-      card.setLikeState(updatedCard.isLiked);
+        if (isLiked) {
+          updatedCard = await api.unlikeCard(cardId);
+        } else {
+          updatedCard = await api.likeCard(cardId);
+        }
+        card.setLikeState(updatedCard.isLiked);
       } catch (error) {
-  console.error("Error al actualizar los likes de la tarjeta:", error);
-}
+        console.error("Error al actualizar los likes de la tarjeta:", error);
+      }
     },
     isOwner,
   );
   return card.generateCard();
 };
-
 
 let userId: string;
 let cardSection: Section<CardData>;
@@ -132,8 +131,6 @@ async function loadInitialData(): Promise<void> {
   }
 }
 
-
-
 const editProfilePopup = new PopupWithForm("#edit-popup", async (values) => {
   const currentUser = userInfo.getUserInfo();
   const updatedUserData = await api.updateUserInfo({
@@ -148,16 +145,13 @@ const editProfilePopup = new PopupWithForm("#edit-popup", async (values) => {
   editProfilePopup.close();
 });
 
-
 const newCardPopup = new PopupWithForm("#new-card-popup", async (values) => {
-const newCardData = await api.addCard({
+  const newCardData = await api.addCard({
     name: values["place-name"],
     link: values.link,
   });
 
-  cardSection.addItem(
-    createCard(newCardData, userId),
-  );
+  cardSection.addItem(createCard(newCardData, userId));
   newCardPopup.close();
 });
 
@@ -167,10 +161,7 @@ const editProfileFormValidator = new FormValidator(
   defaultFormConfig,
   editProfileForm,
 );
-const newCardFormValidator = new FormValidator(
-  defaultFormConfig,
-  newCardForm,
-);
+const newCardFormValidator = new FormValidator(defaultFormConfig, newCardForm);
 const avatarEditFormValidator = new FormValidator(
   defaultFormConfig,
   avatarEditForm,
@@ -203,5 +194,3 @@ avatarEditPopup.setEventListeners();
 editProfileFormValidator.enableValidation();
 newCardFormValidator.enableValidation();
 avatarEditFormValidator.enableValidation();
-
-

@@ -20,7 +20,8 @@ export default class PopupWithForm extends Popup {
     }
 
     this.formElement = formElement;
-    const submitButton = this.formElement.querySelector<HTMLButtonElement>(".popup__button");
+    const submitButton =
+      this.formElement.querySelector<HTMLButtonElement>(".popup__button");
 
     if (!submitButton) {
       throw new Error(`No se encontro el boton de submit: ${popupSelector}`);
@@ -46,21 +47,20 @@ export default class PopupWithForm extends Popup {
       event.preventDefault();
 
       if (!this.formElement.checkValidity()) {
-       return;
+        return;
       }
 
-       const originalText = this.submitButton.textContent;
-        this.submitButton.textContent = "Guardando...";
+      const originalText = this.submitButton.textContent;
+      this.submitButton.textContent = "Guardando...";
 
       try {
-     await this.handleFormSubmit(this.getInputValues());
-
-      } catch (error : unknown) {
-      console.error("Error al enviar el formulario:", error);
-    } finally {
-      this.submitButton.textContent = originalText;
-    }
-  });
+        await this.handleFormSubmit(this.getInputValues());
+      } catch (error: unknown) {
+        console.error("Error al enviar el formulario:", error);
+      } finally {
+        this.submitButton.textContent = originalText;
+      }
+    });
   }
 
   public override close(): void {
