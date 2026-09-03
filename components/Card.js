@@ -32,7 +32,6 @@ export default class Card {
         this.data.isLiked = isLiked;
         this.likeButton.classList.toggle("card__like-button_active", isLiked);
     }
-    ;
     deleteCard() {
         this.element.remove();
     }

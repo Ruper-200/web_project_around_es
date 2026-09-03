@@ -41,7 +41,7 @@ export class Api {
     getInitialCards() {
         return __awaiter(this, void 0, void 0, function* () {
             const res = yield fetch(`${this.baseUrl}/cards/`, {
-                headers: this.headers
+                headers: this.headers,
             });
             if (!res.ok) {
                 throw new Error(`Error: ${res.status}`);

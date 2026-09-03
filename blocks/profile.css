@@ -142,7 +142,7 @@
   height: 120px;
   border-radius: 50%;
   border: none;
-  background: transparent url("../images/edit-icon.svg") center no-repeat;
+  background: transparent;
   background-size: 26px 26px;
   cursor: pointer;
   margin-left: -149px;
@@ -150,5 +150,6 @@
 }
 
 .profile__avatar-edit-button:hover {
-  background-color: rgba(0, 0, 0, 0.6);
+  background: rgba(0, 0, 0, 0.6) url("../images/edit-icon.svg") center no-repeat;
+  background-size: 26px 26px;
 }
