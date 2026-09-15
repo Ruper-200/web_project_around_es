@@ -12,6 +12,10 @@ Around The U.S. es un proyecto desarrollado durante mi formación como Front-End
 El proyecto evolucionó desde una interfaz web hacia una aplicación conectada a un servidor, utilizando TypeScript y una arquitectura basada en clases para separar responsabilidades y organizar la lógica de la aplicación.
 La integración con la API REST permite obtener, crear, actualizar y eliminar información de forma persistente. Las operaciones asíncronas se gestionan mediante `async/await`, Fetch API y manejo de errores HTTP.
 
+## Vista del proyecto
+[![Vista principal de Around The U.S.](./docs/around-preview.png)](https://ruper-200.github.io/web_project_around_es/)
+> Haz clic en la imagen para abrir la aplicación.
+
 
 ## Funcionalidades
 - Obtención de la información del usuario desde el servidor.
