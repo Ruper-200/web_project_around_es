@@ -1,20 +1,19 @@
 # Around The U.S.
+Aplicación Front-End interactiva desarrollada con **TypeScript**, **Programación Orientada a Objetos** e integración con una **API REST**.
+Permite gestionar un perfil de usuario, crear y eliminar tarjetas, interactuar mediante likes y actualizar información persistente almacenada en un servidor.
+
+
+### 🔗 Demo
+**[Ver aplicación desplegada](https://ruper-200.github.io/web_project_around_es/)**
+
 
 ## Descripción
+Around The U.S. es un proyecto desarrollado durante mi formación como Front-End Developer en TripleTen.
+El proyecto evolucionó desde una interfaz web hacia una aplicación conectada a un servidor, utilizando TypeScript y una arquitectura basada en clases para separar responsabilidades y organizar la lógica de la aplicación.
+La integración con la API REST permite obtener, crear, actualizar y eliminar información de forma persistente. Las operaciones asíncronas se gestionan mediante `async/await`, Fetch API y manejo de errores HTTP.
 
-Around The U.S. es una aplicación web interactiva que permite a los usuarios
-gestionar su perfil y compartir tarjetas con fotografías de diferentes lugares.
-
-El proyecto está desarrollado con TypeScript y utiliza Programación Orientada
-a Objetos (POO) para organizar la lógica de la aplicación en componentes
-independientes y reutilizables.
-
-En esta etapa del proyecto se integró una API REST para obtener y almacenar
-los datos del usuario y las tarjetas en un servidor, permitiendo que los
-cambios realizados en la aplicación persistan después de recargar la página.
 
 ## Funcionalidades
-
 - Obtención de la información del usuario desde el servidor.
 - Obtención y renderizado de las tarjetas almacenadas en el servidor.
 - Edición del nombre y la ocupación del usuario.
@@ -32,7 +31,6 @@ cambios realizados en la aplicación persistan después de recargar la página.
 - Manejo de errores en las solicitudes realizadas a la API.
 
 ## Integración con la API
-
 La aplicación se comunica con una API REST para obtener y modificar la
 información almacenada en el servidor.
 
@@ -52,7 +50,6 @@ asíncronas y comprueba las respuestas HTTP antes de utilizar los datos
 devueltos por el servidor.
 
 ## Tecnologías y técnicas utilizadas
-
 - HTML5.
 - CSS3.
 - Diseño responsivo.
@@ -70,51 +67,40 @@ devueltos por el servidor.
 - Git y GitHub para control de versiones.
 
 ## Arquitectura
-
 La aplicación está organizada mediante clases con responsabilidades
 específicas.
 
 ### `Api`
-
 Centraliza la comunicación entre la aplicación y el servidor. Gestiona las
 solicitudes relacionadas con usuarios, tarjetas, likes y avatar.
 
 ### `Card`
-
 Representa una tarjeta individual y administra su comportamiento, incluyendo
 la visualización de la imagen, los likes y la eliminación.
 
 ### `Section`
-
 Administra el renderizado de elementos dentro de un contenedor.
 
 ### `FormValidator`
-
 Gestiona la validación de los formularios y el estado de sus botones de envío.
 
 ### `Popup`
-
 Clase base que contiene el comportamiento común de los popups.
 
 ### `PopupWithImage`
-
 Extiende `Popup` y permite mostrar una imagen en tamaño ampliado.
 
 ### `PopupWithForm`
-
 Extiende `Popup` y administra los formularios utilizados dentro de los popups.
 
 ### `PopupWithConfirmation`
-
 Extiende `Popup` y gestiona la confirmación antes de eliminar una tarjeta.
 
 ### `UserInfo`
-
 Administra la información mostrada en el perfil del usuario, incluyendo nombre,
 ocupación y avatar.
 
 ## Flujo de datos
-
 La información obtenida desde los formularios se envía a la API y la interfaz
 se actualiza utilizando la respuesta del servidor.
 
@@ -133,4 +119,3 @@ Para compilar el proyecto se utiliza el compilador de TypeScript:
 
 ```bash
 tsc
-```
